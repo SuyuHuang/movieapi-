@@ -2,12 +2,12 @@ import chai from "chai";
 import request from "supertest";
 const mongoose = require("mongoose");
 import User from "../../../../api/users/userModel";
-
+let api;
 const expect = chai.expect;
 
 let db;
-let api;
 
+let token='eyJhbGciOiJIUzI1NiJ9.dXNlcjE.FmYria8wq0aFDHnzYWhKQrhF5BkJbFNN1PqNyNQ7V4M'
 const users = [
   {
     username: "user1",
@@ -66,20 +66,39 @@ describe("Users endpoint", () => {
   });
 
   describe("POST / ", () => {
-    it("should return a 200 status and the confirmation message", () => {
+    before((done)=>{
+      request(api)
+      .post("/api/users")  
+      .send({
+        "username":"user1",
+        "password":"test1"
+        
+      })
+      
+      .end((err,res)=>{
+        
+        console.log('BEARER '+token)
+        done()
+      })
+
+    })
+    it("should be able to register", () => {
+      
       return request(api)
-        .post("/api/users")
+        .post("/api/users?action=register")
+        .set("Authorization",'BEARER '+token)
         .send({
           username: "user3",
           password: "test3",
         })
-        .expect(200)
-        .expect({ success: true, token: "FakeTokenForNow" });
+        .expect(201)
+        .expect({code: 201, msg: 'Successful created new user.'});
     });
     after(() => {
       return request(api)
         .get("/api/users")
         .set("Accept", "application/json")
+        .set("Authorization",'BEARER '+token)
         .expect("Content-Type", /json/)
         .expect(200)
         .then((res) => {

@@ -50,8 +50,19 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static('public'));
 app.use('/api/users', usersRouter);
-app.use('/api/movies', passport.authenticate('jwt', {session: false}), moviesRouter);
+// app.use('/api/movies', passport.authenticate('jwt', {session: false}), moviesRouter);
+app.use('/api/movies', moviesRouter);
+// try{
+// app.use('/api/movies', moviesRouter);
+// }
+// catch(err){
+//   console.log('错误为：'+err);
 
+//     res.writeHead(200,{'Contet-Type':'text/html;charset=utf-8'});
+//     res.write(err.toString());
+//     res.end('');
+
+// }
 app.use(errHandler);
 
 let server = app.listen(port, () => {
