@@ -6,7 +6,7 @@ import dotenv from 'dotenv';
 dotenv.config();
 
 const JWTStrategy = passportJWT.Strategy;
-const ExtractJWT = passportJWT.ExtractJwt;
+// const ExtractJWT = passportJWT.ExtractJwt;
 const jwtOptions = {
   jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
   secretOrKey: process.env.SECRET
