@@ -12,6 +12,7 @@ import usersRouter from './api/users';
 
 dotenv.config();
 
+
 if (process.env.NODE_ENV === 'test') {
   loglevel.setLevel('warn')
 } else {
@@ -39,11 +40,11 @@ const app = express();
 
 const port = process.env.PORT ;
 
-// app.use(session({
-//   secret: 'ilikecake',
-//   resave: true,
-//   saveUninitialized: true
-// }));
+app.use(session({
+  secret: 'ilikecake',
+  resave: true,
+  saveUninitialized: true
+}));
 
 app.use(passport.initialize());
 app.use(bodyParser.json());
