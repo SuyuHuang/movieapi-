@@ -6,14 +6,12 @@ import dotenv from 'dotenv';
 dotenv.config();
 
 const JWTStrategy = passportJWT.Strategy;
-// const ExtractJWT = passportJWT.ExtractJwt;
-const jwtOptions = {
-  jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
-  secretOrKey: process.env.SECRET
-};
-// let jwtOptions = {};
-// jwtOptions.jwtFromRequest = ExtractJWT.fromAuthHeaderAsBearerToken();
-// jwtOptions.secretOrKey = process.env.SECRET;
+const ExtractJWT = passportJWT.ExtractJwt;
+
+let jwtOptions = {};
+jwtOptions.jwtFromRequest = ExtractJWT.fromAuthHeaderAsBearerToken();
+// eslint-disable-next-line no-undef
+jwtOptions.secretOrKey = process.env.SECRET;
 const strategy = new JWTStrategy(jwtOptions, async (payload, next) => {
   const user = await UserModel.findByUserName(payload);
   if (user) {
