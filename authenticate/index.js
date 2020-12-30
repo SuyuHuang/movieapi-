@@ -4,9 +4,10 @@ import UserModel from './../api/users/userModel';
 import dotenv from 'dotenv';
 
 dotenv.config();
-
-const JWTStrategy = passportJWT.Strategy;
-const ExtractJWT = passportJWT.ExtractJwt;
+const ExtractJWT = require('passport-jwt').ExtractJwt;
+const JWTStrategy = require('passport-jwt').Strategy;
+// const JWTStrategy = passportJWT.Strategy;
+// const ExtractJWT = passportJWT.ExtractJwt;
 
 let jwtOptions = {};
 jwtOptions.jwtFromRequest = ExtractJWT.fromAuthHeaderAsBearerToken();
