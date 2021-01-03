@@ -6,9 +6,10 @@ import './db';
 import session from 'express-session';
 import passport from './authenticate';
 import loglevel from 'loglevel';
-import {loadUsers, loadMovies} from './seedData';
+import {loadUsers, loadMovies,loadUpcomingMovies, loadActors} from './seedData';
 import usersRouter from './api/users';
-
+import upcomingRouter from './api/upcoming';
+import actorRouter from './api/actors'
 
 dotenv.config();
 
@@ -20,8 +21,10 @@ if (process.env.NODE_ENV === 'test') {
 }
 
 if (process.env.SEED_DB === 'true' && process.env.NODE_ENV === 'development') {
+  loadUpcomingMovies();
   loadUsers();
   loadMovies();
+  loadActors();
 
 }
 
@@ -51,8 +54,10 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static('public'));
 app.use('/api/users', usersRouter);
+app.use('/api/actors', actorRouter);
 // app.use('/api/movies', passport.authenticate('jwt', {session: false}), moviesRouter);
 app.use('/api/movies', moviesRouter);
+app.use('/api/upcoming', upcomingRouter); 
 // try{
 // app.use('/api/movies', moviesRouter);
 // }

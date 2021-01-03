@@ -1,6 +1,10 @@
 import userModel from '../api/users/userModel';
 import movieModel from '../api/movies/movieModel';
+import upcomingModel from '../api/upcoming/upcomingModel'
+import ActorModel from '../api/actors/actorModel'
+import {getUpcomingMovies,getActor,getActors} from '../api/tmdb-api'
 import {movies} from './movies.js';
+
 const users = [
   {
     'username': 'user1',
@@ -12,6 +16,7 @@ const users = [
   },
 ];
 
+
 // deletes all user documents in collection and inserts test data
 export async function loadUsers() {
   console.log('load user Data');
@@ -21,6 +26,31 @@ export async function loadUsers() {
       console.info(`${users.length} users were successfully stored.`);
     } catch (err) {
       console.error(`failed to Load user Data: ${err}`);
+    }
+  }
+
+  export async function loadUpcomingMovies() {
+    console.log('load upcomingmovies');
+    try {
+      getUpcomingMovies().then(async res => {
+        await upcomingModel.deleteMany();
+        await upcomingModel.collection.insertMany(res);
+        console.info(`${res.length} Upcomingmovies were successfully stored.`);
+      })
+    } catch (err) {
+      console.error(`failed to Load upcomingmovie Data: ${err}`);
+    }
+  }
+  export async function loadActors() {
+    console.log('load Actors');
+    try {
+      getActors().then(async res => {
+        await ActorModel.deleteMany();
+        await ActorModel.collection.insertMany(res);
+        console.info(`${res.length} Actors were successfully stored.`);
+      })
+    } catch (err) {
+      console.error(`failed to Load actor Data: ${err}`);
     }
   }
   // deletes all movies documents in collection and inserts test data
