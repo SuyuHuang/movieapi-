@@ -1,6 +1,6 @@
 import express from 'express';
 
-import actorModel from './actorModel'
+import SpecificactorModel from './SpecificactorModel'
 const router = express.Router();
 
 router.get('/', (req, res, next) => {
@@ -9,10 +9,10 @@ router.get('/', (req, res, next) => {
 
 router.get('/:id', (req, res, next) => {
   const id = parseInt(req.params.id);
-  actorModel.findByActorDBId(id).then(actor => res.status(200).send(actor)).catch(next).catch((error)=>next(error));
+  SpecificactorModel.findByActorDBId(id).then(actor => res.status(200).send(actor)).catch(next).catch((error)=>next(error));
   
 });
-
+ 
 
 
 export default router;

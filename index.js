@@ -10,6 +10,7 @@ import {loadUsers, loadMovies,loadUpcomingMovies, loadActors} from './seedData';
 import usersRouter from './api/users';
 import upcomingRouter from './api/upcoming';
 import actorRouter from './api/actors'
+import SpecificactorRouter from './api/actor'
 
 dotenv.config();
 
@@ -56,6 +57,7 @@ app.use(express.static('public'));
 app.use('/api/users', usersRouter);
 app.use('/api/actors', actorRouter);
 // app.use('/api/movies', passport.authenticate('jwt', {session: false}), moviesRouter);
+app.use('/api/actor',SpecificactorRouter)
 app.use('/api/movies', moviesRouter);
 app.use('/api/upcoming', upcomingRouter); 
 // try{
