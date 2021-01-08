@@ -15,11 +15,16 @@ router.get('/:id', (req, res, next) => {
   
 });
 
-router.get('/:id/reviews', (req, res, next) => {
-  const id = parseInt(req.params.id);
-  getMovieReviews(id)
-  .then(reviews => res.status(200).send(reviews))
-  .catch((error) => next(error));
+router.get('/:id/reviews', async(req, res, next) => {
+  try{
+    const id = parseInt(req.params.id);
+
+  const reviews=await getMovieReviews(id)
+  res.status(200).send(reviews);
+  }
+  catch{
+    console.log(err)
+  }
 });
 
 

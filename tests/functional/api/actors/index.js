@@ -6,12 +6,12 @@ const expect = chai.expect;
 let api = require("../../../../index");;
 let token='eyJhbGciOiJIUzI1NiJ9.dXNlcjE.FmYria8wq0aFDHnzYWhKQrhF5BkJbFNN1PqNyNQ7V4M'
 
-const sampleMovie = {
-  id: 337401,
-  title: "Mulan",
+const sampleActor = {
+  id: 90633,
+  name: "Gal Gadot",
 };
 
-describe("Movies endpoint", () => {
+describe("Actors endpoint", () => {
   beforeEach( (done) => {
     try {
       api = require("../../../../index");
@@ -26,7 +26,7 @@ describe("Movies endpoint", () => {
     api.close(); // Release PORT 8080
     delete require.cache[require.resolve("../../../../index")];
   });
-  describe("GET /movies ", () => {
+  describe("GET /actors ", () => {
     before((done)=>{
       request(api)
       .post("/api/users")
@@ -35,20 +35,20 @@ describe("Movies endpoint", () => {
         "password":"test1"
       })
       .end((err,res)=>{
-     
-        console.log(token)
+
         done()
       })
 
     })
-    it("should return 20 movies and a status 200", (done) => {
+    it("should return 20 actors and a status 200", (done) => {
       request(api)
-        .get("/api/movies")
+        .get("/api/actors")
         .set("Accept", "application/json")
         .set("Authorization",'BEARER '+token)
         .expect("Content-Type", /json/)
         .expect(200)
         .end((err, res) => {
+  
           expect(res.body).to.be.a("array");
           expect(res.body.length).to.equal(20);
           done();
@@ -56,18 +56,18 @@ describe("Movies endpoint", () => {
     });
   });
 
-  describe("GET /movies/:id", () => {
+  describe("GET /actor/:id", () => {
     describe("when the id is valid", () => {
 
       it("should return the matching movie", () => {
         request(api)
-          .get(`/api/movies/${sampleMovie.id}`)
+          .get(`/api/actor/${sampleActor.id}`)
           .set("Accept", "application/json")
           .set("Authorization",'BEARER '+token)
           // .expect("Content-Type", /json/)
           .expect(200)
           .then((res) => {
-            expect(res.body).to.have.property("title", sampleMovie.title);
+            expect(res.body).to.have.property("name", sampleActor.name);
           });
       });
     });

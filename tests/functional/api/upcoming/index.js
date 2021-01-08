@@ -11,22 +11,19 @@ const sampleMovie = {
   title: "Mulan",
 };
 
-describe("Movies endpoint", () => {
-  beforeEach( (done) => {
+describe("Upcoming endpoint", () => {
+  beforeEach(async () => {
     try {
       api = require("../../../../index");
     } catch (err) {
-      console.error(`failed to Load user Data: ${err}`);
+      console.error(`failed to Load upcoming Data: ${err}`);
     }
-    setTimeout(() => {
-      done();
-    }, 6000);
   });
   afterEach(() => {
     api.close(); // Release PORT 8080
     delete require.cache[require.resolve("../../../../index")];
   });
-  describe("GET /movies ", () => {
+  describe("GET /upcoming ", () => {
     before((done)=>{
       request(api)
       .post("/api/users")
@@ -41,14 +38,15 @@ describe("Movies endpoint", () => {
       })
 
     })
-    it("should return 20 movies and a status 200", (done) => {
+    it("should return 20 upcoming movies and a status 200", (done) => {
       request(api)
-        .get("/api/movies")
+        .get("/api/upcoming")
         .set("Accept", "application/json")
         .set("Authorization",'BEARER '+token)
         .expect("Content-Type", /json/)
         .expect(200)
         .end((err, res) => {
+     
           expect(res.body).to.be.a("array");
           expect(res.body.length).to.equal(20);
           done();
@@ -56,21 +54,21 @@ describe("Movies endpoint", () => {
     });
   });
 
-  describe("GET /movies/:id", () => {
-    describe("when the id is valid", () => {
+  // describe("GET /movies/:id", () => {
+  //   describe("when the id is valid", () => {
 
-      it("should return the matching movie", () => {
-        request(api)
-          .get(`/api/movies/${sampleMovie.id}`)
-          .set("Accept", "application/json")
-          .set("Authorization",'BEARER '+token)
-          // .expect("Content-Type", /json/)
-          .expect(200)
-          .then((res) => {
-            expect(res.body).to.have.property("title", sampleMovie.title);
-          });
-      });
-    });
+  //     it("should return the matching movie", () => {
+  //       request(api)
+  //         .get(`/api/movies/${sampleMovie.id}`)
+  //         .set("Accept", "application/json")
+  //         .set("Authorization",'BEARER '+token)
+  //         // .expect("Content-Type", /json/)
+  //         .expect(200)
+  //         .then((res) => {
+  //           expect(res.body).to.have.property("title", sampleMovie.title);
+  //         });
+  //     });
+  //   });
     // describe("when the id is invalid", () => {
     //   it("should return the NOT found message", () => {
     //     return request(api)
@@ -86,4 +84,4 @@ describe("Movies endpoint", () => {
     //   });
     // });
   });
-});
+// });
