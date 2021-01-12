@@ -27,6 +27,10 @@ router.get('/:id/reviews', async(req, res, next) => {
   }
 });
 
+router.post('./:id/reviews',async(req,res,next)=>{
+
+})
+
 
 
 export default router;

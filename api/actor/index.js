@@ -4,7 +4,7 @@ import SpecificactorModel from './SpecificactorModel'
 const router = express.Router();
 
 router.get('/', (req, res, next) => {
-  actorModel.find().then(actors => res.status(200).send(actors)).catch(next);
+  SpecificactorModel.find().then(actor => res.status(200).send(actor)).catch(next);
 });
 
 router.get('/:id', (req, res, next) => {

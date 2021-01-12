@@ -4,6 +4,7 @@ import moviesRouter from './api/movies';
 import bodyParser from 'body-parser';
 import './db';
 import session from 'express-session';
+import genresRouter from './api/genres'
 import passport from './authenticate';
 import loglevel from 'loglevel';
 import {loadUsers, loadMovies,loadUpcomingMovies, loadActors} from './seedData';
@@ -11,6 +12,7 @@ import usersRouter from './api/users';
 import upcomingRouter from './api/upcoming';
 import actorRouter from './api/actors'
 import SpecificactorRouter from './api/actor'
+import SpecificmovieRouter from './api/movie'
 
 dotenv.config();
 
@@ -59,7 +61,9 @@ app.use('/api/actors', actorRouter);
 // app.use('/api/movies', passport.authenticate('jwt', {session: false}), moviesRouter);
 app.use('/api/actor',SpecificactorRouter)
 app.use('/api/movies', moviesRouter);
+app.use('/api/movie', SpecificmovieRouter);
 app.use('/api/upcoming', upcomingRouter); 
+app.use('/api/genres', genresRouter); 
 // try{
 // app.use('/api/movies', moviesRouter);
 // }

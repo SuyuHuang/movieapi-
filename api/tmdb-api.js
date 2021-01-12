@@ -55,25 +55,43 @@ export const getMovies = () => {
       .then(res => res.json())
   
   };
-  function postData(url, data) {
-    // Default options are marked with *
-    return fetch(url, {
-      body: JSON.stringify(data), // must match 'Content-Type' header
-      cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
-      credentials: 'same-origin', // include, same-origin, *omit
-      headers: {
-        'user-agent': 'Mozilla/4.0 MDN Example',
-        'content-type': 'application/json'
-      },
-      method: 'POST', // *GET, POST, PUT, DELETE, etc.
-      mode: 'cors', // no-cors, cors, *same-origin
-      redirect: 'follow', // manual, *follow, error
-      referrer: 'no-referrer', // *client, no-referrer
-    })
-      .then(response => response.json()) // parses response to JSON
-  }
+
 
   export const RateMovies=(id,value)=>{
-    return postData(`https://api.themoviedb.org/3/movie/${id}/rating?api_key=6ee3e9a0aa44e4dc5951e0598bae1695&session_id=7f569a2328c1d123b1320da412a2e7d920663d4e`, {value: value})
-
+    return fetch(`https://api.themoviedb.org/3/movie/${id}/rating?api_key=6ee3e9a0aa44e4dc5951e0598bae1695&session_id=7f569a2328c1d123b1320da412a2e7d920663d4e`,{
+      body: JSON.stringify({value:value}), // must match 'Content-Type' header
+          cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
+          credentials: 'same-origin', // include, same-origin, *omit
+          headers: {
+            'user-agent': 'Mozilla/4.0 MDN Example',
+            'content-type': 'application/json'
+          },
+          method: 'POST', // *GET, POST, PUT, DELETE, etc.
+          mode: 'cors', // no-cors, cors, *same-origin
+          redirect: 'follow', // manual, *follow, error
+          referrer: 'no-referrer', // *client, no-referrer
+    })
+    .then(response => response.json())
   }
+  // export const RateMovies = (id, value) => {
+  //   return postData(`https://api.themoviedb.org/3/movie/${id}/rating?api_key=6ee3e9a0aa44e4dc5951e0598bae1695&session_id=7f569a2328c1d123b1320da412a2e7d920663d4e`, {value: value})
+  // };
+  // export const RateMovies=(id,value)=>{
+  //   return fetch(`https://api.themoviedb.org/3/movie/${id}/rating?api_key=6ee3e9a0aa44e4dc5951e0598bae1695&session_id=7f569a2328c1d123b1320da412a2e7d920663d4e`, {
+  //     body: JSON.stringify(data), // must match 'Content-Type' header
+  //     cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
+  //     credentials: 'same-origin', // include, same-origin, *omit
+  //     headers: {
+  //       'user-agent': 'Mozilla/4.0 MDN Example',
+  //       'content-type': 'application/json'
+  //     },
+  //     method: 'POST', // *GET, POST, PUT, DELETE, etc.
+  //     mode: 'cors', // no-cors, cors, *same-origin
+  //     redirect: 'follow', // manual, *follow, error
+  //     referrer: 'no-referrer', // *client, no-referrer
+  //   })
+  //     .then(response => response.json()) // parses response to JSON
+  // }
+
+  
+
