@@ -26,6 +26,10 @@ SpecificmovieSchema.statics.findByMovieDBId = function (id) {
   return this.findOne({ id: id });
 };
 
+SpecificmovieSchema.statics.findByCommentDBauthor = function (author) {
+  return this.findOne({ author:author });
+};
+
 export default mongoose.model('specificmovie', SpecificmovieSchema);
 
 

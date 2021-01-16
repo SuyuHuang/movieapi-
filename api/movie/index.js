@@ -164,15 +164,38 @@ router.post('/:id', async (req, res, next) => {
 router.put('/:id/reviews/:author', async (req, res, next) => {
   try {
     const id=req.params.id
+
   const author=req.params.author
+  const comment = req.body.reviews;
   const movie = await SpecificmovieModel.findByMovieDBId(id);
-  movie.update({"review":[{type:Object,type:Object}]},{$set:{"review":[{"author":"Kenny","review":"abcd"}]}})
+  // update({"name":"alex"},{$set:{"age":"30"}})
+ischanged=false
+  movie.update({"review.author":"Kenny"},{$set:{"review.reviews":"abcd"}})
+  // movie.update({"review":[{type:Object,type:Object}]},{$set:{"review":[{"author":"Kenny","review":"abcd"}]}})
+  movie.review.filter((review)=>{
+
+    if(review.author==author){
+      review.reviews=comment
+      ischanged=true
+    }
+  
+  }
+  );
+
+if(ischanged){
   res.status(201).json({
     code:201,
     msg: 'The rate has been updated',
     length:movie.review.length,
-    movie:movie
+    movie:movie.review
     }); 
+  }
+  else{
+    res.status(401).json({
+      code:401,
+      msg: 'There is no record in this author',
+      }); 
+  }
   }
   catch (error){
     next(error);

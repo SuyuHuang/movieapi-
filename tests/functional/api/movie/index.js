@@ -142,13 +142,12 @@ describe("Movies endpoint", () => {
   })
 });
 
-describe("GET /movie/:id", () => {
+describe("Post /movie/:id/reviews", () => {
   describe("when the id is valid", () => {
     it("should post the review", () => {
       request(api)
       .post(`/api/movie/${sampleMovie.id}/reviews`)
-      .set("author","Kenny")
-      .set("reviews","abc")
+      .send({"author":"kenny","reviews":"abc"})
       .set("Accept", "application/json")
       .set("Authorization",'BEARER '+token)
       // .expect("Content-Type", /json/)
@@ -161,7 +160,7 @@ describe("GET /movie/:id", () => {
       request(api)
       .post(`/api/movie/${sampleMovie.id}/reviews`)
       .set("author","Kenny")
-    
+
       .set("Accept", "application/json")
       .set("Authorization",'BEARER '+token)
       // .expect("Content-Type", /json/)
@@ -204,6 +203,45 @@ describe("GET /movie/:id/reviews/author", () => {
         msg: "The author has not wrote any reviews"
       });
     })
+  });
+  
+})
+describe("Put /movie/:id/reviews/:author", () => {
+    it("should update the review according to the author", () => {
+      request(api)
+      .post(`/api/movie/${sampleMovie.id}/reviews`)
+      .send({"author":"kenny","reviews":"abc"})
+      .set("Accept", "application/json")
+      .set("Authorization",'BEARER '+token)
+
+      request(api)
+      .put(`/api/movie/${sampleMovie.id}/reviews/:author`)
+      .send({"author":"Kenny","reviews":"abcd"})
+      .set("Accept", "application/json")
+      .set("Authorization",'BEARER '+token)
+      .expect({
+        code:201,
+        msg: 'The rate has been updated',
+        length:1,
+      });
+    })
+    it("should alert when the input author has not wrote anything", () => {
+      request(api)
+      .post(`/api/movie/${sampleMovie.id}/reviews`)
+      .send({"author":"kenny","reviews":"abc"})
+      .set("Accept", "application/json")
+      .set("Authorization",'BEARER '+token)
+
+     request(api)
+      .put(`/api/movie/${sampleMovie.id}/reviews/:author`)
+      .send({"author":"Kenny1","reviews":"abcd"})
+      .set("Accept", "application/json")
+      .set("Authorization",'BEARER '+token)
+      .expect({
+        code:401,
+        msg: 'There is no record in this author',
+      });
+    
   });
   
 })
