@@ -38,6 +38,13 @@ router.post('/:id', async (req, res, next) => {
     const userName = req.params.userName;
     const movie = await movieModel.findByMovieDBId(newFavourite);
     const user = await User.findByUserName(userName);
+    if(!movie){
+      res.status(34).json({
+        success: false,
+            status_code: 34,
+            status_message: "The resource you requested could not be found.",
+      });
+    }
     if (user.favourites.includes(movie._id)) {
       res.status(401).json({
         code: 401,
