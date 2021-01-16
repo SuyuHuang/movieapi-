@@ -161,18 +161,22 @@ router.post('/:id', async (req, res, next) => {
   }
 });
 
-router.put('/:id/reviews/:author', (req, res) => {
-  if (req.body._id) delete req.body._id;
+router.put('/:id/reviews/:author', async (req, res, next) => {
+  try {
+    const id=req.params.id
+  const author=req.params.author
   const movie = await SpecificmovieModel.findByMovieDBId(id);
-  User.update(
-    {
-      _id: req.params.id,
-    },
-    req.body,
-    {
-      upsert: false,
-    }
-  ).then((user) => res.json(200, user));
+  movie.update({"review":[{type:Object,type:Object}]},{$set:{"review":[{"author":"Kenny","review":"abcd"}]}})
+  res.status(201).json({
+    code:201,
+    msg: 'The rate has been updated',
+    length:movie.review.length,
+    movie:movie
+    }); 
+  }
+  catch (error){
+    next(error);
+  }
 });
 
   // router.post('/:id/:value', async(req, res, next,err) => {
