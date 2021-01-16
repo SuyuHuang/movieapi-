@@ -32,12 +32,17 @@ router.get('/:id/reviews', async(req, res, next) => {
 router.post('/:id/reviews', async (req, res, next) => {
   try {
     const id =parseInt(req.params.id);
+    console.log(id)
      const movie = await SpecificmovieModel.findByMovieDBId(id);
+     console.log(movie)
      const reviews = req.body.reviews;
      const author=req.body.author;
      await movie.review.push({"author":author,"reviews":reviews});
       await movie.save(); 
-
+      res.status(movie).json({
+        
+         
+        }); 
   }
   catch (error){
     next(error);

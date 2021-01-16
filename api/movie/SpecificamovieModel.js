@@ -16,7 +16,7 @@ const SpecificmovieSchema = new Schema({
   production_countries:{type:Object},
   spoken_languages:{type:Object},
   production_companies:{type:Array},
-  review:[{type:Object}],
+  review:[{type:Object,type:Object}],
 
   rate: [{type: Number}]
 
