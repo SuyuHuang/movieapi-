@@ -20,12 +20,25 @@ router.get('/:id', (req, res, next) => {
 router.get('/:id/reviews', async(req, res, next) => {
   try{
     const id = parseInt(req.params.id);
+    const reviews1 = req.body.reviews;
+    const author=req.body.author;
 
   const reviews=await getMovieReviews(id)
   res.status(200).send(reviews);
   }
   catch{
-    console.log(err)
+    next(error);
+  }
+});
+
+router.post('/:id/reviews', async (req, res, next) => {
+  try {
+    const id =parseInt(req.params.id);
+    const movie = await SpecificmovieModel.findByMovieDBId(id);
+
+  }
+  catch (error){
+    next(error);
   }
 });
 
