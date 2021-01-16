@@ -7,7 +7,7 @@
     "build": "npm-run-all clean compile:all",
     "clean": "rimraf ./build && mkdir build",
     "compile:moviemodels": "babel ./api/movies --out-dir build/api/movies",
-    "compile:genremodels": "babel ./api/movies --out-dir build/api/genres",
+    "compile:genremodels": "babel ./api/genres --out-dir build/api/genres",
     "compile:usermodels": "babel ./api/users --out-dir build/api/users",
     "compile:actorsmodels": "babel ./api/actors --out-dir build/api/actors",
     "compile:upcomingmodels": "babel ./api/upcoming --out-dir build/api/upcoming",

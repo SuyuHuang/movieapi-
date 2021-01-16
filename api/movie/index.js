@@ -41,7 +41,7 @@ router.get('/:id/review', async(req, res, next) => {
   }
 });
 
-router.get('/:id/review/author', async(req, res, next) => {
+router.get('/:id/review/:author', async(req, res, next) => {
   try{
     const id = parseInt(req.params.id);
 const author=req.params.author
@@ -49,14 +49,21 @@ const author=req.params.author
   const movie = await SpecificmovieModel.findByMovieDBId(id);
   console.log(movie.review)
   console.log(movie.review[0].author)
+  const list=[]
+
   const specificreview=movie.review.filter((review)=>{
-    console.log(review[author]=='Kenny')
-    console.log(review[author]+"aaa")
-    console.log(review)
+
+    if(review.author==author){
+      list.push(review)
+    }
   
   }
   );
-  res.status(200).send(specificreview);
+  res.status(201).json({
+    code: 201,
+    msg: list
+      
+    })
   }
   catch(error){
     next(error);
