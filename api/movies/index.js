@@ -10,7 +10,15 @@ router.get('/', (req, res, next) => {
 });
 
 router.get('/:id', (req, res, next) => {
-  const id = parseInt(req.params.id);
+  const id = req.params.id;
+  if(typeof(id)!='number'){
+ 
+    res.status(34).json({
+      success: false,
+          status_code: 34,
+          status_message: "The resource you requested could not be found.",
+    });
+  }
   movieModel.findByMovieDBId(id).then(movie => res.status(200).send(movie)).catch(next).catch((error)=>next(error));
   
 });
@@ -35,16 +43,11 @@ router.post('/:id', async (req, res, next) => {
   try {
  
     const newFavourite = req.body.id;
+
     const userName = req.params.userName;
     const movie = await movieModel.findByMovieDBId(newFavourite);
     const user = await User.findByUserName(userName);
-    if(!movie){
-      res.status(34).json({
-        success: false,
-            status_code: 34,
-            status_message: "The resource you requested could not be found.",
-      });
-    }
+
     if (user.favourites.includes(movie._id)) {
       res.status(401).json({
         code: 401,
