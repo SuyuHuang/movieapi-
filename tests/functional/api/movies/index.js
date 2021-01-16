@@ -71,21 +71,21 @@ describe("Movies endpoint", () => {
           });
       });
     });
-    describe("when the id is invalid", () => {
-      it("should return the NOT found message", () => {
-        return request(api)
-          .get("/api/movies/xxx")
-          .set("Accept", "application/json")
-          .set("Authorization",'BEARER '+token)
-          // .expect("Content-Type", /json/)
-          .expect({
-            success: false,
-            status_code: 34,
-            status_message: "The resource you requested could not be found.",
-          });
+    // describe("when the id is invalid", () => {
+    //   it("should return the NOT found message", () => {
+    //     return request(api)
+    //       .get("/api/movies/xxx")
+    //       .set("Accept", "application/json")
+    //       .set("Authorization",'BEARER '+token)
+    //       // .expect("Content-Type", /json/)
+    //       .expect({
+    //         success: false,
+    //         status_code: 34,
+    //         status_message: "The resource you requested could not be found.",
+    //       });
  
-      });
-    });
+    //   });
+    // });
   });
 });
 // await ActorModel.collection.find().sort({popularity:1})
