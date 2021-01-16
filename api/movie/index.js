@@ -161,6 +161,20 @@ router.post('/:id', async (req, res, next) => {
   }
 });
 
+router.put('/:id/reviews/:author', (req, res) => {
+  if (req.body._id) delete req.body._id;
+  const movie = await SpecificmovieModel.findByMovieDBId(id);
+  User.update(
+    {
+      _id: req.params.id,
+    },
+    req.body,
+    {
+      upsert: false,
+    }
+  ).then((user) => res.json(200, user));
+});
+
   // router.post('/:id/:value', async(req, res, next,err) => {
   //   try{
   //     const id = parseInt(req.params.id);
