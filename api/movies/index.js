@@ -27,10 +27,32 @@ router.get('/:id/reviews', async(req, res, next) => {
   }
 });
 
+
 router.post('./:id/reviews',async(req,res,next)=>{
 
 })
-
+router.post('/:id', async (req, res, next) => {
+  try {
+ 
+    const newFavourite = req.body.id;
+    const userName = req.params.userName;
+    const movie = await movieModel.findByMovieDBId(newFavourite);
+    const user = await User.findByUserName(userName);
+    if (user.favourites.includes(movie._id)) {
+      res.status(401).json({
+        code: 401,
+        msg: 'The movie has appeared'
+      });
+    }
+    else {
+      await user.favourites.push(movie._id);
+      await user.save();
+      res.status(201).json(user);
+    }
+  } catch (error) {
+    next(error);
+  }
+});
 
 
 export default router;

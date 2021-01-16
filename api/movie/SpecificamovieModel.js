@@ -15,12 +15,15 @@ const SpecificmovieSchema = new Schema({
   genres:{type:Array},
   production_countries:{type:Object},
   spoken_languages:{type:Object},
-  production_companies:{type:Array}
+  production_companies:{type:Array},
+  review:{type:String},
+
+  rate: [{type: Number}]
 
 
 
 });
-SpecificmovieSchema.statics.findByActorDBId = function (id) {
+SpecificmovieSchema.statics.findByMovieDBId = function (id) {
   return this.findOne({ id: id });
 };
 

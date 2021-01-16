@@ -12,7 +12,7 @@ router.get('/', (req, res, next) => {
 
 router.get('/:id', (req, res, next) => {
   const id = parseInt(req.params.id);
-  SpecificmovieModel.findByActorDBId(id).then(actor => res.status(200).send(actor)).catch(next).catch((error)=>next(error));
+  SpecificmovieModel.findByMovieDBId(id).then(actor => res.status(200).send(actor)).catch(next).catch((error)=>next(error));
   
 });
  
@@ -29,22 +29,67 @@ router.get('/:id/reviews', async(req, res, next) => {
   }
 });
 
-router.post('./:id/reviews',async(req,res,next)=>{
+router.post('/:id', async (req, res, next) => {
+  try {
 
-})
+    const value = req.body.value;
+    if(!value){
+      res.status(403).json({
+        code: 403,
+        msg: 'Please enter the value'
+      });
+    }
+    else if(typeof(value)!='number'){
+      console.log(typeof(value))
+      res.status(402).json({
+        code: 402,
+        msg: 'Please enter the valid rate'
+      });
 
-  router.post('/:id/:value', async(req, res, next,err) => {
-    try{
-      const id = parseInt(req.params.id);
-      const value=parseFloat(req.params.value);
-      RateMovies(id,value)
+    }
+    const id =req.params.id;
+    
+    const movie = await SpecificmovieModel.findByMovieDBId(id);
+   
+    if (movie!=null) {
+      await movie.rate.push(value);
+      await movie.save(); 
+      res.status(201).json({
+        code:201,
+        msg: 'The rate has been updated'
+        
+        }); 
+ 
+    }
+    else {
+      if(value!=null){
+      res.status(401).json({
+        code: 401,
+        msg: 'The movie does not exist'
+      });
+    }
+ 
+    }
+    
+
+ 
+  } catch (error) {
+    next(error);
+  }
+});
+
+  // router.post('/:id/:value', async(req, res, next,err) => {
+  //   try{
+  //     const id = parseInt(req.params.id);
+  //     const value=parseFloat(req.params.value);
+  //     RateMovies(id,value)
 
   
-    }
-    catch{
-      console.log(err)
-    }
-  });
+  //   }
+  //   catch{
+  //     console.log(err)
+  //   }
+  // });
 
 
 export default router;
