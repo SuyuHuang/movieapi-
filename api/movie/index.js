@@ -59,12 +59,23 @@ const author=req.params.author
   
   }
   );
+
+  
+  if(list.length==0){
+    res.status(401).json({
+      code: 401,
+      msg: "The author has not wrote any reviews"
+        
+      })
+  }
+  else{
   res.status(201).json({
     code: 201,
-    msg: list
-      
+    // msg: list,
+    length: list.length
+  
     })
-  }
+  }}
   catch(error){
     next(error);
   }
@@ -83,7 +94,8 @@ router.post('/:id/reviews', async (req, res, next) => {
       if(reviews){
       res.status(201).json({
         code: 201,
-        msg: 'The review has been updated'
+        msg: 'The review has been updated',
+        
           
         })
       }

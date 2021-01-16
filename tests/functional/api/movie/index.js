@@ -171,5 +171,40 @@ describe("GET /movie/:id", () => {
       });
     })
   });
+  
+})
+
+describe("GET /movie/:id/reviews/author", () => {
+  describe("when the id is valid", () => {
+    it("should get the review of a specific author", () => {
+      request(api)
+      .post(`/api/movie/${sampleMovie.id}/reviews/Kenny`)
+      .send({"author":"Kenny","reviews":"abc"})
+      .send({"author":"Kenny","reviews":"abc"})
+      .send({"author":"Kennya","reviews":"abc"})
+      .set("Accept", "application/json")
+      .set("Authorization",'BEARER '+token)
+      // .expect("Content-Type", /json/)
+      .expect({
+        code: 201,
+        length:2
+      });
+    })
+    it("should alert when there is no review input", () => {
+      request(api)
+      .post(`/api/movie/${sampleMovie.id}/reviews/Kennyabc`)
+      .send({"author":"Kenny","reviews":"abc"})
+      .send({"author":"Kenny","reviews":"abc"})
+      .send({"author":"Kennya","reviews":"abc"})
+      .set("Accept", "application/json")
+      .set("Authorization",'BEARER '+token)
+      // .expect("Content-Type", /json/)
+      .expect({
+        code: 401,
+        msg: "The author has not wrote any reviews"
+      });
+    })
+  });
+  
 })
 });
