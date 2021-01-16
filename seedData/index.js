@@ -64,13 +64,17 @@ export async function loadUsers() {
         await ActorModel.collection.insertMany(res);
         await ActorModel.collection.find().sort({popularity:1})
         console.info(`${res.length} Actors were successfully stored.`);
+
+        
+
         res.map(async (actor)=>{
-          await getActor(actor.id).then(async (res)=>{
+
+          actor=await getActor(actor.id)
        
-            await SpecificactorModel.collection.insertOne(res,(err)=>{if(err) console.log(err);})
+          SpecificactorModel.collection.insertOne(actor,(err)=>{if(err) console.log(err);})
             
-          }
-          )
+          
+          
         })
       })
     } catch (err) {
@@ -88,12 +92,13 @@ export async function loadUsers() {
         await movieModel.collection.find().sort({popularity:1})
         console.info(`${res.length} Movies were successfully stored.`);
         res.map(async (movie)=>{
-          await getMovie(movie.id).then(async (res)=>{
+           movie =await getMovie(movie.id);
+        
        
-            await SpecificmovieModel.collection.insertOne(res,(err)=>{if(err) console.log(err);})
+          SpecificmovieModel.collection.insertOne(movie,(err)=>{if(err) console.log(err);})
             
-          }
-          )
+          
+          
         })
       })
     } catch (err) {

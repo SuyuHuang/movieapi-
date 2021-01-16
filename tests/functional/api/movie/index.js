@@ -141,4 +141,35 @@ describe("Movies endpoint", () => {
     });
   })
 });
+
+describe("GET /movie/:id", () => {
+  describe("when the id is valid", () => {
+    it("should post the review", () => {
+      request(api)
+      .post(`/api/movie/${sampleMovie.id}/reviews`)
+      .set("author","Kenny")
+      .set("reviews","abc")
+      .set("Accept", "application/json")
+      .set("Authorization",'BEARER '+token)
+      // .expect("Content-Type", /json/)
+      .expect({
+        code: 201,
+        msg: 'The review has been updated'
+      });
+    })
+    it("should alert when there is no review input", () => {
+      request(api)
+      .post(`/api/movie/${sampleMovie.id}/reviews`)
+      .set("author","Kenny")
+    
+      .set("Accept", "application/json")
+      .set("Authorization",'BEARER '+token)
+      // .expect("Content-Type", /json/)
+      .expect({
+        code: 401,
+          msg: 'Please enter the reviews'
+      });
+    })
+  });
+})
 });

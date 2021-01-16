@@ -29,20 +29,64 @@ router.get('/:id/reviews', async(req, res, next) => {
   }
 });
 
+router.get('/:id/review', async(req, res, next) => {
+  try{
+    const id = parseInt(req.params.id);
+
+    const movie = await SpecificmovieModel.findByMovieDBId(id);
+  res.status(200).send(movie.review);
+  }
+  catch{
+    next(error);
+  }
+});
+
+router.get('/:id/review/author', async(req, res, next) => {
+  try{
+    const id = parseInt(req.params.id);
+const author=req.params.author
+
+  const movie = await SpecificmovieModel.findByMovieDBId(id);
+  console.log(movie.review)
+  console.log(movie.review[0].author)
+  const specificreview=movie.review.filter((review)=>{
+    console.log(review[author]=='Kenny')
+    console.log(review[author]+"aaa")
+    console.log(review)
+  
+  }
+  );
+  res.status(200).send(specificreview);
+  }
+  catch(error){
+    next(error);
+  }
+});
 router.post('/:id/reviews', async (req, res, next) => {
   try {
     const id =parseInt(req.params.id);
     console.log(id)
      const movie = await SpecificmovieModel.findByMovieDBId(id);
-     console.log(movie)
+    
      const reviews = req.body.reviews;
      const author=req.body.author;
      await movie.review.push({"author":author,"reviews":reviews});
+     
       await movie.save(); 
-      res.status(movie).json({
-        
-         
-        }); 
+      if(reviews){
+      res.status(201).json({
+        code: 201,
+        msg: 'The review has been updated'
+          
+        })
+      }
+      else{
+        res.status(401).json({
+          code: 401,
+          msg: 'Please enter the reviews'
+            
+          })
+      }
   }
   catch (error){
     next(error);
