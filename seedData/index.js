@@ -93,8 +93,7 @@ export async function loadUsers() {
         console.info(`${res.length} Movies were successfully stored.`);
         res.map(async (movie)=>{
            movie =await getMovie(movie.id);
-        
-       
+
           SpecificmovieModel.collection.insertOne(movie,(err)=>{if(err) console.log(err);})
             
           

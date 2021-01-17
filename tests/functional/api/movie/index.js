@@ -245,4 +245,56 @@ describe("Put /movie/:id/reviews/:author", () => {
   });
   
 })
+
+describe("Delete /movie/:id/reviews/:author", () => {
+  it("should delete the review according to the author", () => {
+    request(api)
+    .post(`/api/movie/${sampleMovie.id}/reviews`)
+    .send({"author":"kenny","reviews":"abc"})
+    .set("Accept", "application/json")
+    .set("Authorization",'BEARER '+token)
+
+    request(api)
+    .post(`/api/movie/${sampleMovie.id}/reviews`)
+    .send({"author":"kenny","reviews":"abcd"})
+    .set("Accept", "application/json")
+    .set("Authorization",'BEARER '+token)
+
+    request(api)
+    .post(`/api/movie/${sampleMovie.id}/reviews`)
+    .send({"author":"kenny1","reviews":"abc"})
+    .set("Accept", "application/json")
+    .set("Authorization",'BEARER '+token)
+
+    request(api)
+    .delete(`/api/movie/${sampleMovie.id}/reviews/:author`)
+    .send({"author":"Kenny","reviews":"abcd"})
+    .set("Accept", "application/json")
+    .set("Authorization",'BEARER '+token)
+    .expect({
+      code:201,
+      msg: 'The remark has been deleted',
+      length:1
+    });
+  })
+  it("should alert when there is no record in the input author", () => {
+    request(api)
+    .post(`/api/movie/${sampleMovie.id}/reviews`)
+    .send({"author":"kenny","reviews":"abc"})
+    .set("Accept", "application/json")
+    .set("Authorization",'BEARER '+token)
+
+   request(api)
+    .delete(`/api/movie/${sampleMovie.id}/reviews/:author`)
+    .send({"author":"Kenny1","reviews":"abcd"})
+    .set("Accept", "application/json")
+    .set("Authorization",'BEARER '+token)
+    .expect({
+      code:401,
+      msg: 'There is no record in this author',
+    });
+  
+});
+
+})
 });

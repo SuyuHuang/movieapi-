@@ -202,6 +202,46 @@ if(ischanged){
   }
 });
 
+
+router.delete('/:id/reviews/:author', async (req, res, next) => {
+  try {
+    const id=req.params.id
+const list=[]
+  const author=req.params.author
+  const comment = req.body.reviews;
+  const movie = await SpecificmovieModel.findByMovieDBId(id);
+
+  var ischanged=false
+
+  movie.review.filter((review)=>{
+
+    if(review.author!=author){
+      list.push({"author":review.author,"reviews":review.reviews})
+      ischanged=true
+    }
+  
+  })
+
+movie.review=list
+if(ischanged){
+  res.status(201).json({
+    code:201,
+    msg: 'The remark has been deleted',
+    length:movie.review.length,
+    }); 
+  }
+  else{
+    res.status(401).json({
+      code:401,
+      msg: 'There is no record in this author',
+      }); 
+  }
+  }
+  catch (error){
+    next(error);
+  }
+});
+
   // router.post('/:id/:value', async(req, res, next,err) => {
   //   try{
   //     const id = parseInt(req.params.id);
