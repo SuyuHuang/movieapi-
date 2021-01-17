@@ -54,6 +54,37 @@ describe("Movies endpoint", () => {
           done();
         });
     });
+    it("should return 20 movies according to the specific kind", (done) => {
+      request(api)
+        .get("/api/movies/kind/popularity")
+        .set("Accept", "application/json")
+        .set("Authorization",'BEARER '+token)
+        .expect("Content-Type", /json/)
+        .expect(201)
+        .end((err, res) => {
+          expect(res.body).to.be.a("array");
+          expect(res.body.length).to.equal(20);
+          expect(res.body[0].popularity>res.body[1].popularity)
+          done();
+        });
+    });
+
+    it("should return the error message the kind is invalid", () => {
+      request(api)
+        .get("/api/movies/kind/age")
+        .set("Accept", "application/json")
+        .set("Authorization",'BEARER '+token)
+        .expect("Content-Type", /json/)
+        .expect(401)
+        .expect({
+      
+            code:401,
+            msg: 'The movies can not be sorted by this kind'
+            
+         
+        });
+      
+    });
   });
 
   describe("GET /movies/:id", () => {

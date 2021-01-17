@@ -13,6 +13,22 @@ router.get('/:id', (req, res, next) => {
   
 });
 
+router.get('/kind/:kind', (req, res, next) => {
+  const kind=req.params.kind
+  if (kind=="popularity") {
+    actorModel.collection.find().sort({kind:1})
+    actorModel.find().then(actors => res.status(200).send(actors)).catch(next);
+  }
+  else{
+    res.status(401).json({
+      code:401,
+      msg: 'The actors can not be sorted by this kind'
+      
+      }); 
+  }
+
+  
+});
 
 
 export default router;

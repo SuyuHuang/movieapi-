@@ -12,6 +12,7 @@ router.get('/:id', (req, res, next) => {
   SpecificactorModel.findByActorDBId(id).then(actor => res.status(200).send(actor)).catch(next).catch((error)=>next(error));
   
 });
+
  
 
 

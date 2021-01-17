@@ -15,7 +15,8 @@ const SpecificactorSchema = new Schema({
   profile_path:{type:String},
   known_for_department:{type:String},
   place_of_birth:{type:String},
-  imdb_id:{type:String}
+  imdb_id:{type:String},
+ 
 
 
 });

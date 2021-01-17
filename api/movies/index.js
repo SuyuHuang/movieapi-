@@ -35,10 +35,23 @@ router.get('/:id/reviews', async(req, res, next) => {
   }
 });
 
+router.get('/kind/:kind', (req, res, next) => {
+  const kind=req.params.kind
+  if (kind=='popularity'||kind=='runtime'||kind=="vote_average") {
+    movieModel.collection.find().sort({kind:1})
+    movieModel.find().then(movies => res.status(200).send(movies)).catch(next);
+    
 
-router.post('./:id/reviews',async(req,res,next)=>{
-
-})
+  }
+  else{
+    res.status(401).json({
+      code:401,
+      msg: 'The movies can not be sorted by this kind'
+      
+      }); 
+  }
+  
+});
 router.post('/:id', async (req, res, next) => {
   try {
  
