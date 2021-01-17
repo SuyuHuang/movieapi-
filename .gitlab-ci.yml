@@ -21,7 +21,7 @@ stages:
   - build
   - test
   - staging
-
+  - deploy
 # Jobs:
 
 install_dependencies:
@@ -40,7 +40,7 @@ test_api:
   stage: test
   script:
     - npm test
-  
+
 deploy_staging:
   image: ruby:latest
   only:
@@ -51,5 +51,36 @@ deploy_staging:
     - apt-get install -y ruby-dev
     - gem install dpl
   script:  
-    - dpl --provider=heroku --app=movies-api-staging-suyu --api-key=f055509a-9960-4e00-8934-10f2970af9c9
+    - dpl --provider=heroku --app=$HEROKU_APP_NAME_STAGING --api-key=$HEROKU_API_KEY
     - echo "Deployed to staging server"
+
+continuous_delivery:
+  image: ruby:latest
+  dependencies:
+     - deploy_staging
+  only:
+    - develop
+  stage: deploy
+  before_script:
+    - apt-get update -qy
+    - apt-get install -y ruby-dev
+    - gem install dpl
+  script:  
+    - dpl --provider=heroku --app=$HEROKU_APP_NAME_DEPLOY --api-key=$HEROKU_API_KEY
+    - echo "Deployed to production server"
+  when: manual
+
+continuous_deployment:
+  image: ruby:latest
+  dependencies:
+     - deploy_staging
+  only:
+    - master
+  stage: deploy
+  before_script:
+    - apt-get update -qy
+    - apt-get install -y ruby-dev
+    - gem install dpl
+  script:  
+    - dpl --provider=heroku --app=$HEROKU_APP_NAME_DEPLOY --api-key=$HEROKU_API_KEY
+    - echo "Deployed to production server"
