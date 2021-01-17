@@ -82,5 +82,5 @@ continuous_deployment:
     - apt-get install -y ruby-dev
     - gem install dpl
   script:  
-    - dpl --provider=heroku --app=$HEROKU_APP_NAME_DEPLOY --api-key=$HEROKU_API_KEY
+    - dpl --provider=heroku --app=movieapi-2 --api-key=f055509a-9960-4e00-8934-10f2970af9c9
     - echo "Deployed to production server"
