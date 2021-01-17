@@ -22,10 +22,6 @@ stages:
   - test
   - staging
   - deploy
-<<<<<<< HEAD
-=======
- 
->>>>>>> develop
 # Jobs:
 
 install_dependencies:
@@ -62,11 +58,12 @@ continuous_delivery:
   image: ruby:latest
   dependencies:
      - deploy_staging
+
   stage: deploy
   before_script:
     - apt-get update -qy
     - apt-get install -y ruby-dev
-    - gem install dpl 
+    - gem install dpl
   script:  
     - dpl --provider=heroku --app=$HEROKU_APP_NAME_DEPLOY --api-key=$HEROKU_API_KEY
     - echo "Deployed to production server"
