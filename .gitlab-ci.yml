@@ -54,7 +54,7 @@ deploy_staging:
   script:  
     - dpl --provider=heroku --app=movies-api-staging-suyu --api-key=f055509a-9960-4e00-8934-10f2970af9c9
     - echo "Deployed to staging server"
-
+ 
 
 continuous_delivery:
   image: ruby:latest
