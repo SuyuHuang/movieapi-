@@ -60,8 +60,6 @@ continuous_delivery:
   image: ruby:latest
   dependencies:
      - deploy_staging
-  only:
-    - develop
   stage: deploy
   before_script:
     - apt-get update -qy
