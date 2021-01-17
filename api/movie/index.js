@@ -41,14 +41,63 @@ router.get('/:id/review', async(req, res, next) => {
   }
 });
 
+router.post('/:id', async (req, res, next) => {
+  try {
+
+    const value = req.body.value;
+    if(!value){
+      res.status(403).json({
+        code: 403,
+        msg: 'Please enter the value'
+      });
+    }
+    else if(typeof(value)!='number'){
+      console.log(typeof(value))
+      res.status(402).json({
+        code: 402,
+        msg: 'Please enter the valid rate'
+      });
+
+    }
+    const id =req.params.id;
+    
+    const movie = await SpecificmovieModel.findByMovieDBId(id);
+   
+    if (movie!=null) {
+      await movie.rate.push(value);
+      await movie.save(); 
+      res.status(201).json({
+        code:201,
+        msg: 'The rate has been updated'
+        
+        }); 
+ 
+    }
+    else {
+      if(value!=null){
+      res.status(401).json({
+        code: 401,
+        msg: 'The movie does not exist'
+      });
+    }
+ 
+    }
+    
+
+ 
+  } catch (error) {
+    next(error);
+  }
+});
+
+
 router.get('/:id/review/:author', async(req, res, next) => {
   try{
     const id = parseInt(req.params.id);
 const author=req.params.author
 
   const movie = await SpecificmovieModel.findByMovieDBId(id);
-  console.log(movie.review)
-  console.log(movie.review[0].author)
+
   const list=[]
 
   const specificreview=movie.review.filter((review)=>{
@@ -112,54 +161,7 @@ router.post('/:id/reviews', async (req, res, next) => {
   }
 });
 
-router.post('/:id', async (req, res, next) => {
-  try {
 
-    const value = req.body.value;
-    if(!value){
-      res.status(403).json({
-        code: 403,
-        msg: 'Please enter the value'
-      });
-    }
-    else if(typeof(value)!='number'){
-      console.log(typeof(value))
-      res.status(402).json({
-        code: 402,
-        msg: 'Please enter the valid rate'
-      });
-
-    }
-    const id =req.params.id;
-    
-    const movie = await SpecificmovieModel.findByMovieDBId(id);
-   
-    if (movie!=null) {
-      await movie.rate.push(value);
-      await movie.save(); 
-      res.status(201).json({
-        code:201,
-        msg: 'The rate has been updated'
-        
-        }); 
- 
-    }
-    else {
-      if(value!=null){
-      res.status(401).json({
-        code: 401,
-        msg: 'The movie does not exist'
-      });
-    }
- 
-    }
-    
-
- 
-  } catch (error) {
-    next(error);
-  }
-});
 
 router.put('/:id/reviews/:author', async (req, res, next) => {
   try {
@@ -169,8 +171,8 @@ router.put('/:id/reviews/:author', async (req, res, next) => {
   const comment = req.body.reviews;
   const movie = await SpecificmovieModel.findByMovieDBId(id);
   // update({"name":"alex"},{$set:{"age":"30"}})
-ischanged=false
-  movie.update({"review.author":"Kenny"},{$set:{"review.reviews":"abcd"}})
+var ischanged=false
+  // movie.update({"review.author":"Kenny"},{$set:{"review.reviews":"abcd"}})
   // movie.update({"review":[{type:Object,type:Object}]},{$set:{"review":[{"author":"Kenny","review":"abcd"}]}})
   movie.review.filter((review)=>{
 
@@ -178,7 +180,7 @@ ischanged=false
       review.reviews=comment
       ischanged=true
     }
-  
+   
   }
   );
 
@@ -208,7 +210,6 @@ router.delete('/:id/reviews/:author', async (req, res, next) => {
     const id=req.params.id
 const list=[]
   const author=req.params.author
-  const comment = req.body.reviews;
   const movie = await SpecificmovieModel.findByMovieDBId(id);
 
   var ischanged=false
@@ -228,6 +229,7 @@ if(ischanged){
     code:201,
     msg: 'The remark has been deleted',
     length:movie.review.length,
+    message:list
     }); 
   }
   else{

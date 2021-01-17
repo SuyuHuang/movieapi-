@@ -41,19 +41,7 @@ describe("Movies endpoint", () => {
       })
 
     })
-    it("should return 20 movies and a status 200", (done) => {
-      request(api)
-        .get("/api/movies")
-        .set("Accept", "application/json")
-        .set("Authorization",'BEARER '+token)
-        .expect("Content-Type", /json/)
-        .expect(200)
-        .end((err, res) => {
-          expect(res.body).to.be.a("array");
-          expect(res.body.length).to.equal(20);
-          done();
-        });
-    });
+
     it("should return 20 movies according to the specific kind", (done) => {
       request(api)
         .get("/api/movies/kind/popularity")
