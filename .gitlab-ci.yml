@@ -43,8 +43,6 @@ test_api:
 
 deploy_staging:
   image: ruby:latest
-  only:
-    - develop
   stage: staging
   before_script:
     - apt-get update -qy
@@ -58,7 +56,8 @@ continuous_delivery:
   image: ruby:latest
   dependencies:
      - deploy_staging
-
+  only:
+    - develop
   stage: deploy
   before_script:
     - apt-get update -qy
