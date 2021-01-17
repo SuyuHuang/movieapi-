@@ -22,7 +22,7 @@ stages:
   - test
   - staging
   - deploy
-
+ 
 # Jobs:
 
 install_dependencies:
